@@ -47,42 +47,45 @@ class _MediaTypeSelectionScreenState
             title: StringResource.media,
           ),
         ),
-        body: ListView.separated(
-            itemBuilder: (context, index) {
-              final media = MediaTypes.values[index];
-              return InkWell(
-                onTap: () {
-                  viewModel.selectMediaType(media);
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 45,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        media.title,
-                        color: ColorResource.colorFFFFFF,
-                      ),
-                      if (viewModel.mediaTypes.contains(media))
-                        const Icon(
-                          Icons.check,
-                          size: 20,
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: ListView.separated(
+              itemBuilder: (context, index) {
+                final media = MediaTypes.values[index];
+                return InkWell(
+                  onTap: () {
+                    viewModel.selectMediaType(media);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    height: 45,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                          media.title,
                           color: ColorResource.colorFFFFFF,
-                        )
-                    ],
+                        ),
+                        if (viewModel.mediaTypes.contains(media))
+                          const Icon(
+                            Icons.check,
+                            size: 20,
+                            color: ColorResource.colorFFFFFF,
+                          )
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Container(
-                color: ColorResource.colorFFFFFF,
-                height: 0.5,
-                margin: const EdgeInsets.only(top: 5),
-              );
-            },
-            itemCount: MediaTypes.values.length),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Container(
+                  color: ColorResource.colorFFFFFF,
+                  height: 0.5,
+                  margin: const EdgeInsets.only(top: 5),
+                );
+              },
+              itemCount: MediaTypes.values.length),
+        ),
       ),
     );
   }

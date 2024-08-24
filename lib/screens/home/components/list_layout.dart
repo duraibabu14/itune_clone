@@ -31,9 +31,7 @@ class _BuildListItems extends StatelessWidget {
         return InkWell(
           onTap: () {
             if (data.trackId != null) {
-              final args = MediaDetailScreenArgs(id: data.trackId!);
-              Navigator.pushNamed(context, AppRoutes.mediaDetailScreen,
-                  arguments: args);
+              _onNavigateToMediaDetail(id: data.trackId!, context: context);
             }
           },
           child: Container(
@@ -49,16 +47,17 @@ class _BuildListItems extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      BuildName(
+                      BuildTitleAndSubtitle(
                         name: data.trackCensoredName ?? "-",
+                        fontWeight: FontWeight.w600,
                       ),
                       const SizedBox(height: 5),
-                      BuildName(
+                      BuildTitleAndSubtitle(
                         name: data.artistName ?? "-",
                         fontSize: 12,
                       ),
                       const SizedBox(height: 5),
-                      BuildName(
+                      BuildTitleAndSubtitle(
                         name: data.primaryGenreName ?? "-",
                         fontSize: 12,
                       ),
@@ -71,5 +70,11 @@ class _BuildListItems extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _onNavigateToMediaDetail(
+      {required int id, required BuildContext context}) {
+    final args = MediaDetailScreenArgs(id: id);
+    Navigator.pushNamed(context, AppRoutes.mediaDetailScreen, arguments: args);
   }
 }

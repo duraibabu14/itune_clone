@@ -21,7 +21,7 @@ class MediaTypeSelectionScreenViewModel extends ChangeNotifier {
   }
 
   void addAllMediaType(List<MediaTypes> types) {
-    mediaTypes.addAll(types);
+    mediaTypes = types;
   }
 }
 

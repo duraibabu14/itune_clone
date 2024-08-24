@@ -8,15 +8,16 @@ import 'package:ituneclone/utils/app_utils.dart';
 import 'package:ituneclone/utils/string_resource.dart';
 import 'package:video_player/video_player.dart';
 
-final mediaDetailProvider =
-    ChangeNotifierProvider.autoDispose((ref) => MediaDetailScreenViewModel());
+final mediaDetailProvider = ChangeNotifierProvider.autoDispose(
+    (ref) => MediaDetailScreenViewModel(ref.read(apiServiceProvider)));
 
 class MediaDetailScreenViewModel extends ChangeNotifier {
+  final ApiService _apiService;
+  MediaDetailScreenViewModel(this._apiService);
   SearchResult? searchResult;
   bool isLoading = false;
   VideoPlayerController? videoPlayerController;
   ChewieController? chewieController;
-  final _apiService = ApiService();
 
   Future<void> init(MediaDetailScreenArgs screenArgs) async {
     try {
@@ -25,15 +26,12 @@ class MediaDetailScreenViewModel extends ChangeNotifier {
       if (response.response.statusCode == 200 &&
           response.data.results.isNotEmpty) {
         searchResult = response.data.results.firstOrNull;
-        isLoading = false;
-        notifyListeners();
       } else {
         AppUtils.instance().showToast(StringResource.somethingWentWrong);
-        isLoading = false;
-        notifyListeners();
       }
     } catch (e) {
       AppUtils.instance().showToast(StringResource.somethingWentWrong);
+    } finally {
       isLoading = false;
       notifyListeners();
     }

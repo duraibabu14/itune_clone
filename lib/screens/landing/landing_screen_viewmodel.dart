@@ -3,6 +3,7 @@ import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ituneclone/utils/app_utils.dart';
 import 'package:ituneclone/utils/enum.dart';
+import 'package:ituneclone/utils/string_resource.dart';
 
 final landingScreenViewModelProvider =
     ChangeNotifierProvider.autoDispose<LandingScreenViewModel>((ref) {
@@ -14,21 +15,19 @@ class LandingScreenViewModel extends ChangeNotifier {
   final searchController = TextEditingController();
 
   void addAllMediaTypes(List<MediaTypes> types) {
-    mediaTypes.clear();
-    mediaTypes.addAll(types);
+    mediaTypes = types;
     notifyListeners();
   }
 
   bool isSearchTextValidated() {
-    if (searchController.text.trim().isEmpty) {
-      // AppUtils.instance().showToast(StringResource.searchCannotBeEmpty);
-      return false;
-    } else {
-      return searchController.text.trim().isNotEmpty;
+    final searchText = searchController.text.trim();
+    if (searchText.isEmpty) {
+      AppUtils.instance().showToast(StringResource.searchCannotBeEmpty);
     }
+    return searchText.isNotEmpty;
   }
 
-  Future<bool> isBreaked() async {
+  Future<bool> isRooted() async {
     if (ENVMode.isInDevMode) {
       return false;
     }

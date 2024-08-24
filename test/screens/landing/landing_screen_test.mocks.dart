@@ -97,7 +97,7 @@ class MockLandingScreenViewModel extends _i1.Mock
       ) as bool);
 
   @override
-  _i5.Future<bool> isBreaked() => (super.noSuchMethod(
+  _i5.Future<bool> isRooted() => (super.noSuchMethod(
         Invocation.method(
           #isBreaked,
           [],

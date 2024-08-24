@@ -17,7 +17,7 @@ void main() {
   setUp(() {
     mockViewModel = MockLandingScreenViewModel();
 
-    when(mockViewModel.isBreaked()).thenAnswer((_) async => false);
+    when(mockViewModel.isRooted()).thenAnswer((_) async => false);
   });
 
   testWidgets('should show search field and submit button',

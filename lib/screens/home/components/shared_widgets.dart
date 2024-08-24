@@ -17,13 +17,13 @@ class _BuildNetworkImage extends StatelessWidget {
   }
 }
 
-class BuildName extends StatelessWidget {
+class BuildTitleAndSubtitle extends StatelessWidget {
   final String name;
   final double fontSize;
   final FontWeight fontWeight;
   final bool isSingleLine;
   final Color? color;
-  const BuildName(
+  const BuildTitleAndSubtitle(
       {super.key,
       required this.name,
       this.color,

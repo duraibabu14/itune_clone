@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:ituneclone/entity/base_equatable.dart';
 import 'package:ituneclone/entity/search_result.dart';
 import 'package:json_annotation/json_annotation.dart';

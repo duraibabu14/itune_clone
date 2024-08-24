@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ituneclone/entity/request/search_request.dart';
 import 'package:ituneclone/entity/search_result_response_entity.dart';
 import 'package:ituneclone/network/dio_helper.dart';
@@ -21,3 +22,5 @@ abstract class ApiService {
   Future<HttpResponse<SearchResultResponseEntity>> getMediaDetail(
       {@Query("id") required int id});
 }
+
+final apiServiceProvider = Provider((ref) => ApiService());

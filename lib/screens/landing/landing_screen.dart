@@ -30,7 +30,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
   void initState() {
     final viewModel = ref.read(landingScreenViewModelProvider);
 
-    viewModel.isBreaked().then((isBreak) {
+    viewModel.isRooted().then((isBreak) {
       if (isBreak) {
         showDialog(
           context: context,
@@ -133,7 +133,7 @@ class BuildSearchField extends ConsumerWidget {
             Expanded(
               child: CustomTextField(
                 controller: viewModel.searchController,
-                hint: "Search",
+                hint: StringResource.search,
                 borderRadius: 10,
               ),
             ),
@@ -162,15 +162,7 @@ class BuildSelectedMedias extends ConsumerWidget {
         const SizedBox(height: 10),
         InkWell(
           onTap: () {
-            final args =
-                MediaSelectionScreenArgs(mediaTypes: viewModel.mediaTypes);
-            Navigator.pushNamed(context, AppRoutes.mediaTypeSelectionScreen,
-                    arguments: args)
-                .then((value) {
-              if (value != null) {
-                viewModel.addAllMediaTypes(value as List<MediaTypes>);
-              }
-            });
+            _onNavigateToMediaSelection(context: context, viewModel: viewModel);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -216,6 +208,19 @@ class BuildSelectedMedias extends ConsumerWidget {
       ],
     );
   }
+
+  void _onNavigateToMediaSelection(
+      {required LandingScreenViewModel viewModel,
+      required BuildContext context}) {
+    final args = MediaSelectionScreenArgs(mediaTypes: viewModel.mediaTypes);
+    Navigator.pushNamed(context, AppRoutes.mediaTypeSelectionScreen,
+            arguments: args)
+        .then((value) {
+      if (value != null) {
+        viewModel.addAllMediaTypes(value as List<MediaTypes>);
+      }
+    });
+  }
 }
 
 ///[Submit]
@@ -231,14 +236,7 @@ class BuildSubmit extends ConsumerWidget {
         Expanded(
           child: InkWell(
             onTap: () {
-              FocusScope.of(context).unfocus();
-              if (viewModel.isSearchTextValidated()) {
-                final args = HomeScreenArgs(
-                    mediaTypes: viewModel.mediaTypes,
-                    searchText: viewModel.searchController.text);
-                Navigator.pushNamed(context, AppRoutes.homeScreen,
-                    arguments: args);
-              }
+              _onSubmit(context: context, viewModel: viewModel);
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 15),
@@ -257,5 +255,17 @@ class BuildSubmit extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  void _onSubmit(
+      {required LandingScreenViewModel viewModel,
+      required BuildContext context}) {
+    FocusScope.of(context).unfocus();
+    if (viewModel.isSearchTextValidated()) {
+      final args = HomeScreenArgs(
+          mediaTypes: viewModel.mediaTypes,
+          searchText: viewModel.searchController.text);
+      Navigator.pushNamed(context, AppRoutes.homeScreen, arguments: args);
+    }
   }
 }

@@ -94,20 +94,20 @@ class _BuildLayout extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10),
-                    BuildName(
+                    BuildTitleAndSubtitle(
                       name: viewModel.searchResult?.trackCensoredName ?? "-",
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       isSingleLine: false,
                     ),
                     const SizedBox(height: 10),
-                    BuildName(
+                    BuildTitleAndSubtitle(
                       name: viewModel.searchResult?.artistName ?? "-",
                       fontWeight: FontWeight.w600,
                       isSingleLine: false,
                     ),
                     const SizedBox(height: 10),
-                    BuildName(
+                    BuildTitleAndSubtitle(
                       name: viewModel.searchResult?.primaryGenreName ?? "-",
                       fontWeight: FontWeight.w600,
                       isSingleLine: false,
@@ -115,7 +115,7 @@ class _BuildLayout extends ConsumerWidget {
                       color: Colors.amber,
                     ),
                     const SizedBox(height: 10),
-                    BuildName(
+                    BuildTitleAndSubtitle(
                       name: viewModel.searchResult?.country ?? "-",
                       fontWeight: FontWeight.w600,
                       isSingleLine: false,
@@ -125,7 +125,7 @@ class _BuildLayout extends ConsumerWidget {
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        BuildName(
+                        BuildTitleAndSubtitle(
                           name: viewModel.searchResult?.contentAdvisoryRating ??
                               "-",
                           fontWeight: FontWeight.w600,

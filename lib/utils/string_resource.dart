@@ -13,6 +13,7 @@ class StringResource {
   static const String detail = "Detail";
   static const String description = "Description";
   static const String noInternet = "No Internet";
+  static const String search = "Search";
   static const String rootDes =
       "This device is rooted, which may compromise security and app functionality. For your protection, please use the app on an unrooted device";
   static const String searchDescription =

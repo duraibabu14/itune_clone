@@ -98,8 +98,9 @@ class _BuildLayoutState extends ConsumerState<_BuildLayout>
         TabBar(
           unselectedLabelColor: ColorResource.colorGrey700,
           labelColor: ColorResource.colorFFFFFF,
-          unselectedLabelStyle:
-              GoogleFonts.nunitoSans(fontWeight: FontWeight.w600),
+          unselectedLabelStyle: GoogleFonts.nunitoSans(
+            fontWeight: FontWeight.w600,
+          ),
           labelStyle: GoogleFonts.nunitoSans(fontWeight: FontWeight.w600),
           padding: EdgeInsets.zero,
           tabs: [
@@ -136,8 +137,9 @@ class _BuildLayoutState extends ConsumerState<_BuildLayout>
         ),
         Expanded(
           child: TabBarView(
-              controller: viewModel.tabController,
-              children: const [_BuildGridLayout(), _BuildListLayout()]),
+            controller: viewModel.tabController,
+            children: const [_BuildGridLayout(), _BuildListLayout()],
+          ),
         ),
       ],
     );

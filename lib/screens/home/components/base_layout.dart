@@ -29,7 +29,7 @@ class _BuildBaseLayout extends ConsumerWidget {
 }
 
 class _BuildHeader extends StatelessWidget {
-  final SearchResuleModel item;
+  final SearchResultModel item;
   const _BuildHeader({required this.item});
 
   @override

@@ -10,43 +10,46 @@ import 'package:ituneclone/utils/string_resource.dart';
 
 final homeScreenViewModelProvider =
     ChangeNotifierProvider.autoDispose<HomeScreenViewModel>((ref) {
-  return HomeScreenViewModel();
+  return HomeScreenViewModel(ref.read(apiServiceProvider));
 });
 
 class HomeScreenViewModel extends ChangeNotifier {
+  final ApiService _apiService;
+  HomeScreenViewModel(this._apiService);
+
   late TabController tabController;
 
-  final List<SearchResuleModel> searchResult = [];
+  final List<SearchResultModel> searchResult = [];
 
   bool isLoading = false;
-  final _apiService = ApiService();
   Future<void> init(HomeScreenArgs screenArgs) async {
     try {
       isLoading = true;
+
+      final medias = screenArgs.mediaTypes.length == MediaTypes.values.length
+          ? ["all"]
+          : screenArgs.mediaTypes.map((e) => e.name).toList();
+
       final response = await _apiService.searchItuneStore(
-          request: SearchRequest(
-              term: screenArgs.searchText,
-              media: screenArgs.mediaTypes.length == MediaTypes.values.length
-                  ? ["all"]
-                  : screenArgs.mediaTypes.map((e) => e.name).toList()));
+        request: SearchRequest(term: screenArgs.searchText, media: medias),
+      );
+
       if (response.response.statusCode == 200 &&
           response.data.results.isNotEmpty) {
         for (final data in ResultKind.values) {
-          searchResult.add(SearchResuleModel(
-              kind: data,
-              result: response.data.results
-                  .where((element) => element.kind == data)
-                  .toList()));
+          final results = response.data.results
+              .where((element) => element.kind == data)
+              .toList();
+          searchResult.add(
+            SearchResultModel(kind: data, result: results),
+          );
         }
-        isLoading = false;
-        notifyListeners();
       } else {
         AppUtils.instance().showToast(StringResource.somethingWentWrong);
-        isLoading = false;
-        notifyListeners();
       }
     } catch (e) {
       AppUtils.instance().showToast(StringResource.somethingWentWrong);
+    } finally {
       isLoading = false;
       notifyListeners();
     }
@@ -68,10 +71,10 @@ class HomeScreenArgs {
   });
 }
 
-class SearchResuleModel {
+class SearchResultModel {
   final ResultKind kind;
   final List<SearchResult> result;
-  SearchResuleModel({
+  SearchResultModel({
     required this.kind,
     required this.result,
   });
