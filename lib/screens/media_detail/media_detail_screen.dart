@@ -77,13 +77,14 @@ class _BuildLayout extends ConsumerWidget {
         const SizedBox(height: 10),
         Row(
           children: [
+            const SizedBox(width: 10),
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: CustomNetworkImage(
                 imageURL: viewModel.searchResult!.artworkUrl100!,
-                height: 300,
+                height: 200,
                 width: 200,
-                boxFit: BoxFit.fill,
+                boxFit: BoxFit.cover,
               ),
             ),
             Expanded(
@@ -188,7 +189,7 @@ class _BuildPreviewState extends ConsumerState<_BuildPreview> {
           )
         : SizedBox(
             width: MediaQuery.sizeOf(context).width,
-            height: 300,
+            height: 250,
             child: Chewie(
               controller: viewModel.chewieController!,
             ),

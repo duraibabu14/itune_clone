@@ -8,8 +8,8 @@ class StringResource {
   static const String searchCannotBeEmpty = "Search cannot be empty";
   static const String somethingWentWrong = "Something Went Wrong, Try Again!";
   static const String loading = "Loading";
-  static const String gridLayout = "Grid Layout";
-  static const String listLayout = "List Layout";
+  static const String gridLayout = "Grid";
+  static const String listLayout = "List";
   static const String detail = "Detail";
   static const String description = "Description";
   static const String noInternet = "No Internet";

@@ -102,12 +102,32 @@ class _BuildLayoutState extends ConsumerState<_BuildLayout>
               GoogleFonts.nunitoSans(fontWeight: FontWeight.w600),
           labelStyle: GoogleFonts.nunitoSans(fontWeight: FontWeight.w600),
           padding: EdgeInsets.zero,
-          tabs: const [
+          tabs: [
             Tab(
-              text: StringResource.gridLayout,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    StringResource.gridLayout,
+                    style: GoogleFonts.nunitoSans(),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.view_module_outlined, size: 20),
+                ],
+              ),
             ),
             Tab(
-              text: StringResource.listLayout,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    StringResource.listLayout,
+                    style: GoogleFonts.nunitoSans(),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.list, size: 20),
+                ],
+              ),
             ),
           ],
           indicatorSize: TabBarIndicatorSize.tab,

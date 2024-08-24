@@ -51,6 +51,12 @@ class HomeScreenViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
 }
 
 class HomeScreenArgs {

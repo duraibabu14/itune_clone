@@ -7,7 +7,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'landing_screen_test.mocks.dart';
-// For Riverpod testing utilities
 
 // Create mocks
 

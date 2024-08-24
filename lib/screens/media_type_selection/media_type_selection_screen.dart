@@ -55,7 +55,8 @@ class _MediaTypeSelectionScreenState
                   viewModel.selectMediaType(media);
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  height: 45,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -66,6 +67,7 @@ class _MediaTypeSelectionScreenState
                       if (viewModel.mediaTypes.contains(media))
                         const Icon(
                           Icons.check,
+                          size: 20,
                           color: ColorResource.colorFFFFFF,
                         )
                     ],

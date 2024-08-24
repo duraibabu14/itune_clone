@@ -13,7 +13,6 @@ class LandingScreenViewModel extends ChangeNotifier {
   List<MediaTypes> mediaTypes = [];
   final searchController = TextEditingController();
 
-
   void addAllMediaTypes(List<MediaTypes> types) {
     mediaTypes.clear();
     mediaTypes.addAll(types);
@@ -34,5 +33,11 @@ class LandingScreenViewModel extends ChangeNotifier {
       return false;
     }
     return await FlutterJailbreakDetection.jailbroken;
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 }

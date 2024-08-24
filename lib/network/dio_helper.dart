@@ -18,17 +18,20 @@ class DioHelper {
     dio.options.responseType = ResponseType.json;
     dio.transformer = BackgroundTransformer();
     final bytes = SSLCer.getCert();
-    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-      final SecurityContext context = SecurityContext(withTrustedRoots: false);
-      context.setTrustedCertificatesBytes(bytes!);
+    final SecurityContext context = SecurityContext();
+    context.setTrustedCertificatesBytes(bytes!);
 
-      HttpClient httpClient = HttpClient(context: context);
-      httpClient.badCertificateCallback =
-          (X509Certificate cert, String host, int port) {
-        return cert.pem == String.fromCharCodes(bytes);
-      };
-      return httpClient;
+    HttpClient httpClient = HttpClient(context: context);
+    httpClient.badCertificateCallback =
+        (X509Certificate cert, String host, int port) {
+      return false;
     };
+    dio.httpClientAdapter = IOHttpClientAdapter(
+      createHttpClient: () {
+        return httpClient;
+      },
+    );
+
     _setupAuthInterceptor();
     _setupLogInterceptor();
   }
