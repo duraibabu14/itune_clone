@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ituneclone/screens/landing/landing_screen_viewmodel.dart';
 import 'package:ituneclone/utils/app_utils.dart';
 import 'package:ituneclone/utils/enum.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockAppUtils extends Mock implements AppUtils {}
 

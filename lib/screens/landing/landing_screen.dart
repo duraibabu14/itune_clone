@@ -11,6 +11,7 @@ import 'package:ituneclone/routes.dart';
 import 'package:ituneclone/screens/home/home_screen_viewmodel.dart';
 import 'package:ituneclone/screens/landing/landing_screen_viewmodel.dart';
 import 'package:ituneclone/screens/media_type_selection/media_type_selection_screen_view_model.dart';
+import 'package:ituneclone/utils/app_utils.dart';
 import 'package:ituneclone/utils/color_resource.dart';
 import 'package:ituneclone/utils/enum.dart';
 import 'package:ituneclone/utils/image_resource.dart';
@@ -32,36 +33,7 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
 
     viewModel.isRooted().then((isBreak) {
       if (isBreak) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return PopScope(
-                canPop: false,
-                child: Dialog(
-                  backgroundColor: ColorResource.colorGrey700,
-                  surfaceTintColor: Colors.transparent,
-                  insetPadding: const EdgeInsets.all(20),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Container(
-                    padding: const EdgeInsets.all(30),
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomText(
-                          StringResource.rootDes,
-                          textAlign: TextAlign.center,
-                          color: ColorResource.colorFFFFFF,
-                          fontWeight: FontWeight.w600,
-                        )
-                      ],
-                    ),
-                  ),
-                ));
-          },
-        );
+        _rootedDialog();
       } else {
         connectivityListener ??=
             Connectivity().onConnectivityChanged.listen((event) async {
@@ -71,8 +43,43 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
         });
       }
     });
-
+    viewModel.errorStreamController.stream.listen((data) {
+      AppUtils.instance().showToast(data);
+    });
     super.initState();
+  }
+
+  void _rootedDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return PopScope(
+            canPop: false,
+            child: Dialog(
+              backgroundColor: ColorResource.colorGrey700,
+              surfaceTintColor: Colors.transparent,
+              insetPadding: const EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Container(
+                padding: const EdgeInsets.all(30),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomText(
+                      StringResource.rootDes,
+                      textAlign: TextAlign.center,
+                      color: ColorResource.colorFFFFFF,
+                      fontWeight: FontWeight.w600,
+                    )
+                  ],
+                ),
+              ),
+            ));
+      },
+    );
   }
 
   @override

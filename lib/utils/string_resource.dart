@@ -4,6 +4,7 @@ class StringResource {
   static const String chooseMedia = "Choose Media Type";
   static const String media = "Select Media";
   static const String submit = "Submit";
+  static const String tryAgain = "Try Again";
   static const String iTunes = "iTunes";
   static const String searchCannotBeEmpty = "Search cannot be empty";
   static const String somethingWentWrong = "Something Went Wrong, Try Again!";
@@ -14,6 +15,7 @@ class StringResource {
   static const String description = "Description";
   static const String noInternet = "No Internet";
   static const String search = "Search";
+  static const String cannotLaunch = "Cannot Launch";
   static const String rootDes =
       "This device is rooted, which may compromise security and app functionality. For your protection, please use the app on an unrooted device";
   static const String searchDescription =

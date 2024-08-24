@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ituneclone/utils/color_resource.dart';
+import 'package:ituneclone/utils/string_resource.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ENVMode {
   ENVMode._(_);
   static bool get isInDevMode {
-    const bool isInDevMode = true;
+    const bool isInDevMode = false;
     return isInDevMode;
   }
 }
@@ -25,7 +27,7 @@ class AppUtils {
         toastLength: Toast.LENGTH_SHORT,
         gravity: toastGravity ?? ToastGravity.BOTTOM,
         backgroundColor: color,
-        textColor: Colors.white,
+        textColor: ColorResource.colorFFFFFF,
         fontSize: 14.0);
   }
 
@@ -35,7 +37,7 @@ class AppUtils {
     try {
       await launchUrl(uri!, mode: LaunchMode.externalApplication);
     } catch (err) {
-      showToast("Cannot Launch");
+      showToast(StringResource.cannotLaunch);
     }
   }
 }

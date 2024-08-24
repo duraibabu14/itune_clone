@@ -1,36 +1,41 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ituneclone/entity/search_result.dart';
-import 'package:ituneclone/network/api_service.dart';
-import 'package:ituneclone/utils/app_utils.dart';
+import 'package:ituneclone/repository/itune_repository.dart';
 import 'package:ituneclone/utils/string_resource.dart';
 import 'package:video_player/video_player.dart';
 
 final mediaDetailProvider = ChangeNotifierProvider.autoDispose(
-    (ref) => MediaDetailScreenViewModel(ref.read(apiServiceProvider)));
+    (ref) => MediaDetailScreenViewModel(ref.read(repositoryProvider)));
 
 class MediaDetailScreenViewModel extends ChangeNotifier {
-  final ApiService _apiService;
-  MediaDetailScreenViewModel(this._apiService);
+  final ItuneRepository _repository;
+  MediaDetailScreenViewModel(this._repository);
   SearchResult? searchResult;
   bool isLoading = false;
   VideoPlayerController? videoPlayerController;
   ChewieController? chewieController;
+  StreamController errorStreamController = StreamController();
 
-  Future<void> init(MediaDetailScreenArgs screenArgs) async {
+  Future<void> init(MediaDetailScreenArgs screenArgs,
+      {bool refreshLoading = false}) async {
     try {
       isLoading = true;
-      final response = await _apiService.getMediaDetail(id: screenArgs.id);
-      if (response.response.statusCode == 200 &&
-          response.data.results.isNotEmpty) {
-        searchResult = response.data.results.firstOrNull;
+      if (refreshLoading) {
+        notifyListeners();
+      }
+      final response = await _repository.getMediaDetail(screenArgs.id);
+      if (response.data != null) {
+        searchResult = response.data?.firstOrNull;
       } else {
-        AppUtils.instance().showToast(StringResource.somethingWentWrong);
+        errorStreamController.add(StringResource.somethingWentWrong);
       }
     } catch (e) {
-      AppUtils.instance().showToast(StringResource.somethingWentWrong);
+      errorStreamController.add(StringResource.somethingWentWrong);
     } finally {
       isLoading = false;
       notifyListeners();
@@ -54,6 +59,7 @@ class MediaDetailScreenViewModel extends ChangeNotifier {
   void dispose() {
     chewieController?.dispose();
     videoPlayerController?.dispose();
+    errorStreamController.close();
     super.dispose();
   }
 }

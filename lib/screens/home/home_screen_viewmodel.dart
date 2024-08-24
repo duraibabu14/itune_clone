@@ -1,54 +1,58 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ituneclone/entity/request/search_request.dart';
 import 'package:ituneclone/entity/search_result.dart';
-import 'package:ituneclone/network/api_service.dart';
-import 'package:ituneclone/utils/app_utils.dart';
+import 'package:ituneclone/repository/itune_repository.dart';
 import 'package:ituneclone/utils/enum.dart';
 import 'package:ituneclone/utils/string_resource.dart';
 
 final homeScreenViewModelProvider =
-    ChangeNotifierProvider.autoDispose<HomeScreenViewModel>((ref) {
-  return HomeScreenViewModel(ref.read(apiServiceProvider));
+    ChangeNotifierProvider<HomeScreenViewModel>((ref) {
+  return HomeScreenViewModel(ref.read(repositoryProvider));
 });
 
 class HomeScreenViewModel extends ChangeNotifier {
-  final ApiService _apiService;
-  HomeScreenViewModel(this._apiService);
+  final ItuneRepository _repository;
+  HomeScreenViewModel(this._repository);
 
   late TabController tabController;
-
+  StreamController errorStreamController = StreamController();
   final List<SearchResultModel> searchResult = [];
 
   bool isLoading = false;
-  Future<void> init(HomeScreenArgs screenArgs) async {
+  Future<void> init(HomeScreenArgs screenArgs,
+      {bool refreshLoading = false}) async {
     try {
       isLoading = true;
+      if (refreshLoading) {
+        notifyListeners();
+      }
 
       final medias = screenArgs.mediaTypes.length == MediaTypes.values.length
           ? ["all"]
           : screenArgs.mediaTypes.map((e) => e.name).toList();
 
-      final response = await _apiService.searchItuneStore(
-        request: SearchRequest(term: screenArgs.searchText, media: medias),
+      final response = await _repository.getSearchResults(
+        SearchRequest(term: screenArgs.searchText, media: medias),
       );
 
-      if (response.response.statusCode == 200 &&
-          response.data.results.isNotEmpty) {
+      if (response.data != null) {
         for (final data in ResultKind.values) {
-          final results = response.data.results
-              .where((element) => element.kind == data)
-              .toList();
+          final results =
+              response.data!.where((element) => element.kind == data).toList();
           searchResult.add(
             SearchResultModel(kind: data, result: results),
           );
         }
       } else {
-        AppUtils.instance().showToast(StringResource.somethingWentWrong);
+        errorStreamController.sink
+            .add(response.error ?? StringResource.somethingWentWrong);
       }
     } catch (e) {
-      AppUtils.instance().showToast(StringResource.somethingWentWrong);
+      errorStreamController.sink.add(StringResource.somethingWentWrong);
     } finally {
       isLoading = false;
       notifyListeners();
@@ -58,6 +62,7 @@ class HomeScreenViewModel extends ChangeNotifier {
   @override
   void dispose() {
     tabController.dispose();
+    errorStreamController.close();
     super.dispose();
   }
 }

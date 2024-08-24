@@ -11,6 +11,7 @@ import 'package:ituneclone/entity/search_result.dart';
 import 'package:ituneclone/routes.dart';
 import 'package:ituneclone/screens/home/home_screen_viewmodel.dart';
 import 'package:ituneclone/screens/media_detail/media_detail_screen_viewmodel.dart';
+import 'package:ituneclone/utils/app_utils.dart';
 import 'package:ituneclone/utils/color_resource.dart';
 import 'package:ituneclone/utils/enum.dart';
 import 'package:ituneclone/utils/string_resource.dart';
@@ -32,8 +33,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     final viewModel = ref.read(homeScreenViewModelProvider);
+    viewModel.errorStreamController.stream.listen((data) {
+      AppUtils.instance().showToast(data);
+    });
     viewModel.init(widget.args);
-
     super.initState();
   }
 
@@ -49,13 +52,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           title: StringResource.iTunes,
         ),
       ),
-      body: const _BuildMainSection(),
+      body: _BuildMainSection(widget.args),
     );
   }
 }
 
 class _BuildMainSection extends ConsumerWidget {
-  const _BuildMainSection();
+  final HomeScreenArgs args;
+
+  const _BuildMainSection(this.args);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,7 +69,11 @@ class _BuildMainSection extends ConsumerWidget {
     if (viewModel.isLoading) {
       return const CustomProgressIndicator();
     } else if (viewModel.searchResult.isEmpty) {
-      return const CustomEmpty();
+      return Center(
+        child: CustomEmpty(
+          onRetry: () => viewModel.init(args, refreshLoading: true),
+        ),
+      );
     } else {
       return const _BuildLayout();
     }

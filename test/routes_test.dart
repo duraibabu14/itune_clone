@@ -10,7 +10,7 @@ import 'package:ituneclone/screens/media_type_selection/media_type_selection_scr
 import 'package:ituneclone/screens/media_type_selection/media_type_selection_screen_view_model.dart';
 import 'package:ituneclone/screens/no_internet/no_internet_screen.dart';
 import 'package:ituneclone/utils/enum.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MyContext extends Mock implements BuildContext {}
 

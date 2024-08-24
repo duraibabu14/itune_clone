@@ -26,6 +26,9 @@ class _MediaDetailScreenState extends ConsumerState<MediaDetailScreen> {
   @override
   void initState() {
     final viewModel = ref.read(mediaDetailProvider);
+    viewModel.errorStreamController.stream.listen((event) {
+      AppUtils.instance().showToast(event);
+    });
     viewModel.init(widget.args);
     super.initState();
   }
@@ -42,13 +45,15 @@ class _MediaDetailScreenState extends ConsumerState<MediaDetailScreen> {
           title: StringResource.detail,
         ),
       ),
-      body: const _BuildMainSection(),
+      body: _BuildMainSection(widget.args),
     );
   }
 }
 
 class _BuildMainSection extends ConsumerWidget {
-  const _BuildMainSection();
+  final MediaDetailScreenArgs args;
+
+  const _BuildMainSection(this.args);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,7 +62,11 @@ class _BuildMainSection extends ConsumerWidget {
     if (viewModel.isLoading) {
       return const CustomProgressIndicator();
     } else if (viewModel.searchResult == null) {
-      return const CustomEmpty();
+      return Center(
+        child: CustomEmpty(
+          onRetry: () => viewModel.init(args, refreshLoading: true),
+        ),
+      );
     } else {
       return const _BuildLayout();
     }
