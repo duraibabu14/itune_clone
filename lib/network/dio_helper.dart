@@ -24,7 +24,7 @@ class DioHelper {
     HttpClient httpClient = HttpClient(context: context);
     httpClient.badCertificateCallback =
         (X509Certificate cert, String host, int port) {
-      return true;
+      return false;
     };
     dio.httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
