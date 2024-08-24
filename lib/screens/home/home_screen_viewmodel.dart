@@ -19,13 +19,15 @@ class HomeScreenViewModel extends ChangeNotifier {
   HomeScreenViewModel(this._repository);
 
   late TabController tabController;
-  StreamController errorStreamController = StreamController();
+  StreamController errorStreamController = StreamController.broadcast();
+  StreamSubscription? errorStreamSubscription;
   final List<SearchResultModel> searchResult = [];
 
   bool isLoading = false;
   Future<void> init(HomeScreenArgs screenArgs,
       {bool refreshLoading = false}) async {
     try {
+      searchResult.clear();
       isLoading = true;
       if (refreshLoading) {
         notifyListeners();
@@ -48,8 +50,7 @@ class HomeScreenViewModel extends ChangeNotifier {
           );
         }
       } else {
-        errorStreamController.sink
-            .add(response.error ?? StringResource.somethingWentWrong);
+        errorStreamController.sink.add(StringResource.somethingWentWrong);
       }
     } catch (e) {
       errorStreamController.sink.add(StringResource.somethingWentWrong);

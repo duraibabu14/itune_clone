@@ -15,6 +15,7 @@ final landingScreenViewModelProvider =
 class LandingScreenViewModel extends ChangeNotifier {
   List<MediaTypes> mediaTypes = [];
   final searchController = TextEditingController();
+  StreamSubscription? errorStreamSubscription;
 
   StreamController<String> errorStreamController =
       StreamController<String>.broadcast();

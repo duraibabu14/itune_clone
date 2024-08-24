@@ -26,10 +26,11 @@ class LandingScreen extends ConsumerStatefulWidget {
 
 class _LandingScreenState extends ConsumerState<LandingScreen> {
   StreamSubscription? connectivityListener;
+  late LandingScreenViewModel viewModel;
 
   @override
   void initState() {
-    final viewModel = ref.read(landingScreenViewModelProvider);
+    viewModel = ref.read(landingScreenViewModelProvider);
 
     viewModel.isRooted().then((isBreak) {
       if (isBreak) {
@@ -43,7 +44,8 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
         });
       }
     });
-    viewModel.errorStreamController.stream.listen((data) {
+    viewModel.errorStreamSubscription ??=
+        viewModel.errorStreamController.stream.listen((data) {
       AppUtils.instance().showToast(data);
     });
     super.initState();
@@ -116,6 +118,8 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
   @override
   void dispose() {
     connectivityListener?.cancel();
+    viewModel.errorStreamSubscription?.cancel();
+    viewModel.errorStreamSubscription = null;
     super.dispose();
   }
 }

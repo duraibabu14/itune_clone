@@ -30,10 +30,13 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late HomeScreenViewModel viewModel;
+
   @override
   void initState() {
-    final viewModel = ref.read(homeScreenViewModelProvider);
-    viewModel.errorStreamController.stream.listen((data) {
+    viewModel = ref.read(homeScreenViewModelProvider);
+    viewModel.errorStreamSubscription ??=
+        viewModel.errorStreamController.stream.listen((data) {
       AppUtils.instance().showToast(data);
     });
     viewModel.init(widget.args);
@@ -54,6 +57,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: _BuildMainSection(widget.args),
     );
+  }
+
+  @override
+  void dispose() {
+    viewModel.errorStreamSubscription?.cancel();
+    viewModel.errorStreamSubscription = null;
+    super.dispose();
   }
 }
 
